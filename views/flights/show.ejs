@@ -63,10 +63,11 @@ action="/flights/<%= flight._id %>/destinations">
 </div>
 </div>
 
-<h2>Tickets</h2>
-<a href="/flights/<%= flight.id %>/tickets/new">Add New Ticket</a>
 
-<% if (flight.tickets.length) { %>
+<h2>Tickets</h2>
+<a href="/tickets/<%= flight.id %>/new">Add New Ticket</a>
+
+<% if (tickets.length) { %>
     <table>
         <thead>
             <tr>
@@ -75,7 +76,7 @@ action="/flights/<%= flight._id %>/destinations">
             </tr>
         </thead>
         <tbody>
-            <% flight.tickets.forEach(function(t) { %>
+            <% tickets.forEach(function(t) { %>
                 <tr>
                 <td><%= t.seat %></td>
                 <td><%= t.price %></td>
@@ -86,6 +87,7 @@ action="/flights/<%= flight._id %>/destinations">
 <% } else { %>
     <h5>No Tickets Yet</h5>
 <% } %>
+
 
  </center>
 

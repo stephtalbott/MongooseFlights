@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const ticketsCtrl = require("../controllers/tickets");
 
-router.get("/", ticketsCtrl.new)
+// this is /tickets/:flightId/new
+router.get("/:flightId/new", ticketsCtrl.new)
+//this endpoint is req.params.flightId
+
+// this is /tickets/:flightId
 router.post("/:flightId", ticketsCtrl.create);
 
 

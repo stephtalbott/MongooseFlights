@@ -1,16 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema 
 
-const ticketSchema = new Schema({
-  seat: {
-    type: String,
-    match: /[A-F][1-9]\d?/,
-  },
-  price: {
-    type: Number,
-    min: 0,
-  }
-});
 
 const destinationSchema = new Schema(
   {
@@ -54,7 +44,9 @@ const flightSchema = new Schema({
         }
     },
     destinations: [destinationSchema],
-    tickets: [ticketSchema],
+    // this is one way of handling a one:many, but the ticket references the flight so we don't need it 
+    // see show controller for flight 
+    // tickets: [{type: Schema.Types.ObjectId, ref: "Ticket"}],
   },
   {
     timestamps: true,

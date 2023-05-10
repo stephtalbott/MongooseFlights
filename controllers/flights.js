@@ -1,6 +1,6 @@
 // import flight model 
 const Flight = require('../models/flight')
-const Ticket = require("../models/flight");
+const Ticket = require("../models/ticket");
 
 //define controller functions 
 function newFlight(req, res) {
@@ -40,10 +40,20 @@ function index(req, res) {
 }
 
 function show(req, res) {
+  //finding the specific flight
   Flight.findById(req.params.id)
     .then((flightDoc) => {
       console.log(flightDoc)
-      res.render('flights/show', {flight: flightDoc})
+      // querying the ticket model with this id
+      return Ticket.find({flight: flightDoc.id})
+        .then((tickets) => {
+          return { flight: flightDoc, tickets: tickets };
+        })
+        .catch((error) => console.error);
+    })
+     .then((data) => {
+        console.log('this is the data obj inside second then of findById', data)
+        res.render("flights/show", { flight: data.flight, tickets: data.tickets});
     })
     .catch((err) => {
       console.log("=================err");
