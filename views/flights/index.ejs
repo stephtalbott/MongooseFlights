@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 
- <center>   <h1>All Flights</h1> </center>
- <div class="container">
+<center>   <h1>All Flights</h1> </center>
+<div class="container">
 <table class ="table">
     <thead>
         <center>
@@ -11,26 +11,22 @@
             <th><strong>Flight Number:</strong><br></th>
             <th><strong>Departure:</strong><br></th>
             
-            
         </tr>
         </center>
     </thead>
-    <tbody> 
-        <% flights.forEach(function(flight) { %>
-            <tr>
-                <td><%= flight.airline %></td>
-                <td><%= flight.airport %></td> 
-                <td><%= flight.flightNo %></td> 
-                <td><%= flight.departs.toLocaleString('en-US', {
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric'
-                }) %></td> 
-                <td><a href="/flights/<%= flight.id %>">DETAILS</a></td>
-            </tr>
-        <% }) %>
-        
-    </tbody>
+    <tbody>
+    <% flights.sort(function(a, b) {
+        return new Date(a.departs) - new Date(b.departs);
+    }).forEach(function(flight) { %>
+        <tr <% if (new Date(flight.departs) < new Date()) { %> style="color: red;"<% } %>>
+            <td><%= flight.airline %></td>
+            <td><%= flight.airport %></td>
+            <td><%= flight.flightNo %></td>
+            <td><%= flight.departs %></td>
+            <td><a href="/flights/<%= flight.id %>">DETAILS</a></td>
+        </tr>
+    <% }) %>
+</tbody>
 </table>
 </div>
 <%- include('../partials/footer') %>

@@ -1,28 +1,64 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema 
 
+const ticketSchema = new Schema({
+  seat: {
+    type: String,
+    match: /[A-F][1-9]\d?/,
+  },
+  price: {
+    type: Number,
+    min: 0,
+  }
+});
 
-const flightSchema = new Schema(
+const destinationSchema = new Schema(
   {
-    airline: String,
-    airport: String,
-    flightNo: {
-      type: Number,
-      min: 10, 
-      max: 9999,
+    airport: {
+      type: String,
+      enum: ["AUS", "DFW", "DEN", "LAX", "SAN"],
     },
-    departs: {
-        type: Date, 
-        default: function () {
-            let oneYearFromNow = new Date();
-            oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-            return oneYearFromNow;
-        }
-    }
+    arrival: Date,
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model('Flight', flightSchema)
+const flightSchema = new Schema({
+    airline: {
+      type: String,
+    },
+    airport: {
+      type: String, 
+      enum: ['AUS', 'DFW', 'DEN', 'LAX', 'SAN'],
+      default: 'DEN',
+    },
+    flightNo: {
+      type: Number,
+      min: 10, 
+      max: 9999,
+      required: true,
+    },
+    departs: {
+        type: Date, 
+        validate: (value) => {
+            if (value < new Date()) {
+                throw new Error('Date must be in the future')
+            }
+        },
+        default: function () {
+            let oneYearFromNow = new Date();
+            oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+            return oneYearFromNow;
+        }
+    },
+    destinations: [destinationSchema],
+    tickets: [ticketSchema],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Flight", flightSchema);

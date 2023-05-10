@@ -1,28 +1,46 @@
 <%- include('../partials/header') %>
-<h2>Add a New Flight</h2>
-<form action="/flights" method="POST">
-    <label>Airline:
-       <select name="airline">
-            <option value="SouthWest">SouthWest</option>
-            <option value="Delta">Delta</option>
-            <option value="American Airlines">American Airlines</option>
-            <option value="Alaskan Airlines">Alaskan Airlines</option>
-        </select>
-    </label><br>
-    <label>Airport:
-        <select name="airport">
-            <option value="AUS">Austin-Bergstrom</option>
-            <option value="DEN">Denver</option>
-            <option value="PDX">Portland</option>
-            <option value="LAX">Los Angeles</option>
-        </select>
-    </label><br>
-    <label>Flight Number:
-        <input type="number" name="flightNo">
-    </label><br>
-    <label for="departs">Departure:</label>
-        <input type="datetime" id="departs"
-       name="departs" value ="<%= (new Date(new Date().setFullYear(new Date().getFullYear() + 1))).toISOString().split('T')[0] %>">
-    <button type="submit">Add Flight</button>
-</form>
+
+<center>
+    <h2>Add a New Flight</h2>
+<div class="w-25 p-3">
+    <form action="/flights" method="POST">
+        <div class="col-md">
+            <div class="form-floating">
+                <select name="airline" class="form-select" id="floatingSelectGrid">
+                    <option value="SouthWest">SouthWest</option>
+                    <option value="Delta">Delta</option>
+                    <option value="American Airlines">American Airlines</option>
+                    <option value="Alaskan Airlines">Alaskan Airlines</option>
+                </select>
+                <label for="floatingSelectGrid">Airline</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <select name="airport" class="form-select" id="floatingSelectGrid">
+                    <option value="AUS">Austin-Bergstrom</option>
+                    <option value="DEN" selected>Denver</option>
+                    <option value="DFW">Dallas</option>
+                    <option value="SAN">San Diego</option>
+                    <option value="LAX">Los Angeles</option>
+                </select>
+                <label for="floatingSelectGrid">Airport</label>
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="number" name="flightNo" class="form-control" placeholder="insert flight number">
+            <label for="floatingInput">Flight Number</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="datetime" class="form-control" id="departs" name="departs" 
+            value ="<%= (new Date(new Date().setFullYear(new Date().getFullYear() + 1))).toISOString().split('T')[0] %>">
+            <label for="floatingInput">Departure</label>
+        </div>
+        <button class="btn btn-primary" type="submit">Add Flight</button>
+    </form>
+</div>
+</center>
+
+
+
 <%- include('../partials/footer') %>

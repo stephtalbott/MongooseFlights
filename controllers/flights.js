@@ -1,22 +1,20 @@
 // import flight model 
 const Flight = require('../models/flight')
+const Ticket = require("../models/flight");
 
 //define controller functions 
 function newFlight(req, res) {
-    console.log('the new route has been hit')
+    const newFlight = new Flight();
     res.render('flights/new')
 }
 
 function create(req, res) {
-
-
-
         Flight.create(req.body)
       .then(flightDoc => {
         //   res.send(`Movie Created: ${movieDoc.title}`)
 
         // return res.redirect(`/flights/${flightDoc.id}`);
-        return res.redirect(`/flights/`);
+        return res.redirect(`/flights/${flightDoc.id}`);
       })
       .catch((err) => {
         console.log("==========err");
@@ -42,21 +40,17 @@ function index(req, res) {
 }
 
 function show(req, res) {
-  // we're going to use a model method findById
-  // findById takes a mongoDb id and finds the appropriate documents
-  console.log("these are the req params", req.params);
   Flight.findById(req.params.id)
-    .then((flight) => {
-      console.log("this is the movie in show", flight);
-
-      // res.send(`found ${movie.title}`)
-      res.render("flights/show", { flight: flight });
+    .then((flightDoc) => {
+      console.log(flightDoc)
+      res.render('flights/show', {flight: flightDoc})
     })
     .catch((err) => {
-      console.log("==========err");
+      console.log("=================err");
       console.log(err);
+      console.log("====================");
 
-      return res.send("err creating, check the terminal");
+      return res.send("err finding, check the terminal");
     });
 
   // res.send(req.params.id)

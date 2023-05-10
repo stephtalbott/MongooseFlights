@@ -1,11 +1,92 @@
 <%- include('../partials/header') %>
 
-<section>
- <center><h1>Flight Details</h1></center>
- <div><strong>Flight Number:</strong> <%= flight.flightNo %> </div>
- <div><strong>Airport:</strong> <%= flight.airport %> </div>
- <div><strong>Airline:</strong> <%= flight.airline %> </div>
- <div><strong>Departure:</strong> <%= flight.departs %> </div>
-</section>
+<table>
+ <center><h1>Flight Details</h1>
+    <div><strong>Flight Number:</strong> <%= flight.flightNo %> </div>
+    <div><strong>Airport:</strong> <%= flight.airport %> </div>
+    <div><strong>Airline:</strong> <%= flight.airline %> </div>
+    <div><strong>Departure:</strong> <%= flight.departs %> </div>
+</table>
+</center>
+<center><br>
+<div class="w-50 p-3">
+<h4>Destinations</h4>
+<form id="add-destination-form" method="POST" 
+action="/flights/<%= flight._id %>/destinations">
+    <div class="form-floating">
+        <select name="airport" class="form-select" id="floatingSelectGrid">
+            <option value="AUS">Austin-Bergstrom</option>
+            <option value="DEN" selected>Denver</option>
+            <option value="DFW">Dallas</option>
+            <option value="SAN">San Diego</option>
+            <option value="LAX">Los Angeles</option>
+        </select>
+        <label for="floatingSelectGrid">Airport</label>
+    </div>
+    <div class="form-floating mb-3">
+    <input type="datetime" class="form-control" id="arrival" name="arrival" 
+        value ="<%= (new Date(new Date().setFullYear(new Date().getFullYear() + 1))).toISOString().split('T')[0] %>">
+        <label for="floatingInput">Arrival Time</label><br>
+    <button class="btn btn-primary" type="submit">Add Destination</button>
+     </div>
+</form>
+</div>
+
+
+<div class="w-75 p-3">
+<% if (flight.destinations.length) { %>
+<div class="container">
+ <table class="table">
+  <thead>
+    <tr>
+      <th>Airport</th>
+      <th>Arrivals</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% flight.destinations.forEach(function(d) { %>
+      <tr>
+        <td><%= d.airport %></td>
+        <td><%= d.arrival %></td>
+        <td><%= flight.departs.toLocaleString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+ </table>
+<% } else { %>
+  <h5>no pending arrivals</h5>
+<% } %>
+</div>
+</div>
+
+<h2>Tickets</h2>
+<a href="/flights/<%= flight.id %>/tickets/new">Add New Ticket</a>
+
+<% if (flight.tickets.length) { %>
+    <table>
+        <thead>
+            <tr>
+                <th>Seat</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% flight.tickets.forEach(function(t) { %>
+                <tr>
+                <td><%= t.seat %></td>
+                <td><%= t.price %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <h5>No Tickets Yet</h5>
+<% } %>
+
+ </center>
 
 <%- include('../partials/footer') %>
